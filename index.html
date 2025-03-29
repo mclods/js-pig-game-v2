@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Pig Game v2</title>
-</head>
-<body>
-  
-  <script src="script.js" type="module"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Pig Game v2</title>
+  </head>
+  <body>
+    <main class="game-container">
+      <section class="player-container first-player" data-testid="player-1">
+        <p class="player-name">Player 1</p>
+        <p class="player-total-score">0</p>
+        <div class="current-score-container">
+          <p class="current-score-title">Current</p>
+          <p class="current-score">0</p>
+        </div>
+      </section>
+      <section class="player-container second-player" data-testid="player-2">
+        <p class="player-name">Player 2</p>
+        <p class="player-total-score">0</p>
+        <div class="current-score-container">
+          <p class="current-score-title">Current</p>
+          <p class="current-score">0</p>
+        </div>
+      </section>
+      <section class="game-controls-container">
+        <div class="new-game-btn-container">
+          <button>🔄 New Game</button>
+        </div>
+        <div class="dice-image-container">
+          <img src="./assets/dice-1.png" alt="Dice" class="dice-image" />
+        </div>
+        <div class="roll-dice-btn-container">
+          <button>🎲 Roll dice</button>
+        </div>
+        <div class="hold-btn-container">
+          <button>📥 Hold</button>
+        </div>
+      </section>
+    </main>
+    <script src="script.js" type="module"></script>
+  </body>
 </html>
