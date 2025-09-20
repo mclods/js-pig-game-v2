@@ -14,16 +14,18 @@
   </head>
   <body>
     <main class="game-container">
-      <section class="player-container" data-testid="player-1">
+      <section class="player-container player-1">
         <p class="player-name">Player 1</p>
+        <p class="player-status">WON</p>
         <p class="player-total-score">0</p>
         <div class="current-score-container">
           <p class="current-score-title">Current</p>
           <p class="current-score">0</p>
         </div>
       </section>
-      <section class="player-container" data-testid="player-2">
+      <section class="player-container player-2">
         <p class="player-name">Player 2</p>
+        <p class="player-status">LOST</p>
         <p class="player-total-score">0</p>
         <div class="current-score-container">
           <p class="current-score-title">Current</p>
@@ -32,16 +34,16 @@
       </section>
       <section class="game-controls-container">
         <div class="new-game-btn-container">
-          <button data-testid="new-game-btn">🔄 New Game</button>
+          <button id="new-game-btn">🔄 New Game</button>
         </div>
         <div class="dice-image-container">
           <img src="./assets/dice-1.png" alt="Dice" class="dice-image" />
         </div>
         <div class="roll-dice-btn-container">
-          <button class="big-btn" data-testid="roll-dice-btn">🎲 Roll dice</button>
+          <button id="roll-dice-btn" class="big-btn">🎲 Roll dice</button>
         </div>
         <div class="hold-btn-container">
-          <button data-testid="hold-btn">📥 Hold</button>
+          <button id="hold-btn">📥 Hold</button>
         </div>
       </section>
     </main>
