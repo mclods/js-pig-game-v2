@@ -1,36 +1,54 @@
 "use strict";
 
-let PLAYER_1_TOTAL_SCORE,
-  PLAYER_2_TOTAL_SCORE,
-  ACTIVE_PLAYER_CURRENT_SCORE,
-  ACTIVE_PLAYER;
+// Game States
+let PLAYER_1_TOTAL_SCORE;
+let PLAYER_2_TOTAL_SCORE;
+let ACTIVE_PLAYER_CURRENT_SCORE;
+let ACTIVE_PLAYER;
 
 const PLAYER = {
   PLAYER_1: 1,
   PLAYER_2: 2,
 };
 
+// Game Configurations
+const GAME_WIN_MESSAGE = "WON";
+const GAME_LOST_MESSAGE = "LOST";
+
 const DICE_IMG_PATH = "./assets/dice-*.png";
 const DICE_ROLL_DURATION_SECONDS = 0.25;
 
-const PLAYER_1_EL = document.querySelector('[data-testid="player-1"]');
-const PLAYER_2_EL = document.querySelector('[data-testid="player-2"]');
+// Player DOM
+const PLAYER_1_EL = document.querySelector(".player-1");
+const PLAYER_2_EL = document.querySelector(".player-2");
 
+// Player Total Scores DOM
 const PLAYER_1_TOTAL_SCORE_EL = document.querySelector(
-  '[data-testid="player-1"] .player-total-score'
+  ".player-1 .player-total-score"
 );
 const PLAYER_2_TOTAL_SCORE_EL = document.querySelector(
-  '[data-testid="player-2"] .player-total-score'
+  ".player-2 .player-total-score"
 );
 
+// Player Current Scores DOM
 const PLAYER_1_CURRENT_SCORE_EL = document.querySelector(
-  '[data-testid="player-1"] .current-score-container .current-score'
+  ".player-1 .current-score-container .current-score"
 );
 const PLAYER_2_CURRENT_SCORE_EL = document.querySelector(
-  '[data-testid="player-2"] .current-score-container .current-score'
+  ".player-2 .current-score-container .current-score"
 );
 
+// Player Status DOM
+const PLAYER_1_STATUS_EL = document.querySelector(".player-1 .player-status");
+const PLAYER_2_STATUS_EL = document.querySelector(".player-2 .player-status");
+
+// Dice DOM
 const DICE_IMG = document.querySelector(".dice-image");
+
+// Buttons DOM
+const NEW_GAME_BTN = document.getElementById("new-game-btn");
+const ROLL_DICE_BTN = document.getElementById("roll-dice-btn");
+const HOLD_BTN = document.getElementById("hold-btn");
 
 function setActivePlayer(player) {
   ACTIVE_PLAYER = player;
@@ -71,7 +89,24 @@ function setActivePlayerCurrentScore(score) {
   }
 }
 
+function setGameCompletedStatus() {
+  if (ACTIVE_PLAYER === PLAYER.PLAYER_1) {
+    PLAYER_1_STATUS_EL.textContent = GAME_WIN_MESSAGE;
+    PLAYER_2_STATUS_EL.textContent = GAME_LOST_MESSAGE;
+  } else if (ACTIVE_PLAYER === PLAYER.PLAYER_2) {
+    PLAYER_2_STATUS_EL.textContent = GAME_WIN_MESSAGE;
+    PLAYER_1_STATUS_EL.textContent = GAME_LOST_MESSAGE;
+  } else {
+    console.error(
+      "Trying to set game completed status of invalid active player."
+    );
+  }
+}
+
 function setActivePlayerWindow() {
+  PLAYER_1_EL.classList.remove("player-winner");
+  PLAYER_2_EL.classList.remove("player-winner");
+
   if (ACTIVE_PLAYER === PLAYER.PLAYER_1) {
     PLAYER_2_EL.classList.remove("player-active");
     PLAYER_1_EL.classList.add("player-active");
@@ -84,6 +119,22 @@ function setActivePlayerWindow() {
     console.log("Setting player 2 window as active");
   } else {
     console.error("Trying to set invalid active player window.");
+  }
+}
+
+function setActivePlayerAsWinner() {
+  if (ACTIVE_PLAYER === PLAYER.PLAYER_1) {
+    PLAYER_1_EL.classList.remove("player-active");
+    PLAYER_1_EL.classList.add("player-winner");
+
+    console.log("Setting player 1 as winner");
+  } else if (ACTIVE_PLAYER === PLAYER.PLAYER_2) {
+    PLAYER_2_EL.classList.remove("player-active");
+    PLAYER_2_EL.classList.add("player-winner");
+
+    console.log("Setting player 2 as winner");
+  } else {
+    console.error("Trying to set invalid active player as winner.");
   }
 }
 
@@ -159,6 +210,15 @@ function setDiceFace(diceFace) {
   }
 }
 
+function setGameCompleted() {
+  hideDice();
+  removeGameControls();
+  setGameCompletedStatus();
+  setActivePlayerAsWinner();
+
+  console.log("Game is completed");
+}
+
 function rollDice() {
   const diceFace = Math.trunc(Math.random() * 6) + 1;
 
@@ -172,10 +232,14 @@ function rollDice() {
 }
 
 function hold() {
-  setActivePlayerTotalScore(
-    getActivePlayerTotalScore() + ACTIVE_PLAYER_CURRENT_SCORE
-  );
-  toggleActivePlayer();
+  const highScore = getActivePlayerTotalScore() + ACTIVE_PLAYER_CURRENT_SCORE;
+  setActivePlayerTotalScore(highScore);
+
+  if (highScore >= 100) {
+    setGameCompleted();
+  } else {
+    toggleActivePlayer();
+  }
 }
 
 function initScores() {
@@ -195,20 +259,31 @@ function initCurrentScores() {
   setPlayerCurrentScore(PLAYER.PLAYER_2, 0);
 }
 
+function initGameStatus() {
+  PLAYER_1_STATUS_EL.textContent = "";
+  PLAYER_2_STATUS_EL.textContent = "";
+}
+
+function initGameControls() {
+  ROLL_DICE_BTN.classList.remove("hidden");
+  HOLD_BTN.classList.remove("hidden");
+}
+
+function removeGameControls() {
+  ROLL_DICE_BTN.classList.add("hidden");
+  HOLD_BTN.classList.add("hidden");
+}
+
 function startGame() {
   initScores();
+  initGameStatus();
+  initGameControls();
   hideDice();
   setActivePlayer(PLAYER.PLAYER_1);
 }
 
-document
-  .querySelector('[data-testid="new-game-btn"]')
-  .addEventListener("click", startGame);
-document
-  .querySelector('[data-testid="roll-dice-btn"]')
-  .addEventListener("click", rollDice);
-document
-  .querySelector('[data-testid="hold-btn"]')
-  .addEventListener("click", hold);
+NEW_GAME_BTN.addEventListener("click", startGame);
+ROLL_DICE_BTN.addEventListener("click", rollDice);
+HOLD_BTN.addEventListener("click", hold);
 
 startGame();
