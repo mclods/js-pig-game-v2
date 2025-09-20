@@ -109,6 +109,10 @@ body {
   transition: all 0.2s;
 }
 
+#roll-dice-btn {
+  height: 6rem;
+}
+
 .game-controls-container button:hover {
   cursor: pointer;
 }
@@ -132,4 +136,8 @@ body {
 .dice-image {
   width: 6rem;
   height: 6rem;
+}
+
+.hidden {
+  display: none;
 }
